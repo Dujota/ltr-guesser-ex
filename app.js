@@ -22,7 +22,13 @@ let guessesLeft = 10;
 let userGuesses = [];
 let randomLetter;
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
 // UI Variables
+const winsEl = document.querySelector('#wins');
+const lossesEl = document.querySelector('#losses');
+const guessesLeftEl = document.querySelector('#guesses-left');
+const userGuessesEl = document.querySelector('#user-guesses');
+const letterButtonsContainerEl = document.querySelector('#letter-buttons-container');
 
 // Utility Functions
 
