@@ -31,9 +31,19 @@ const userGuessesEl = document.querySelector('#user-guesses');
 const letterButtonsContainerEl = document.querySelector('#letter-buttons-container');
 
 // Utility Functions
-
+function computerChoice() {
+  return Math.floor(Math.random() * letters.length);
+}
 // Event Handles
 
 // Event Listeners
 
 // start the game
+function init() {
+  winsEl.textContent = wins;
+  lossesEl.textContent = losses;
+  guessesLeftEl.textContent = guessesLeft;
+  userGuessesEl.textContent = userGuesses;
+}
+
+init();
