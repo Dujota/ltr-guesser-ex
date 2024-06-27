@@ -18,7 +18,7 @@
 // Game Variables
 let wins = 0;
 let losses = 0;
-let guessesLeft = 1;
+let guessesLeft = 10;
 let userGuesses = [];
 let randomLetter;
 const letters = 'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase().split('');
@@ -104,12 +104,24 @@ function handleButtonClick(event) {
 
   const choice = event.target.innerText;
   checkForValidTurn(choice);
+  checkWinCondition(choice);
 }
 // Event Listeners
 document.addEventListener('click', handleButtonClick);
 
 // start the game
 function init() {
+  // 1st load scenario
+  // all the values are set to default
+
+  // after win/loss scenario
+  // we need to reset the guessses left and user guesses
+  // userguesses array lenght > 0  && guesses left !== 10
+  if (userGuesses.length > 0 && guessesLeft !== 10) {
+    guessesLeft = 10;
+    userGuesses = [];
+  }
+
   computerChoice();
 
   updateUI(winsEl, wins);
