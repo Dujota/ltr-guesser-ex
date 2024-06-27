@@ -18,7 +18,7 @@
 // Game Variables
 let wins = 0;
 let losses = 0;
-let guessesLeft = 10;
+let guessesLeft = 1;
 let userGuesses = [];
 let randomLetter;
 const letters = 'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase().split('');
@@ -48,21 +48,62 @@ function generateLetterButtons() {
 
   return buttons;
 }
+
+function displayMessage(message) {
+  window.alert(message);
+}
+
+function updateUI(el, value) {
+  el.textContent = value;
+}
+
+function takeTurn(letter) {
+  guessesLeft -= 1;
+  userGuesses.push(letter);
+  updateUI(guessesLeftEl, guessesLeft);
+  updateUI(userGuessesEl, userGuesses);
+}
+
+function checkForValidTurn(letter) {
+  if (userGuesses.includes(letter)) {
+    displayMessage('You already guessed that letter!');
+  } else {
+    // add the choice to the user choices
+    takeTurn(letter);
+  }
+}
+
+function checkWinCondition(letter) {
+  // if the letter is the same as random letter
+  // +1 win, display winning message, reset the game
+  // else if guesses left === 0 show the lossing message and reset the game
+
+  if (letter === randomLetter) {
+    wins += 1;
+    displayMessage(`You won! The letter was ${randomLetter}!`);
+    init();
+  } else if (guessesLeft === 0) {
+    losses += 1;
+    displayMessage(`Oooops you ran out of turns! The letter was ${randomLetter}!`);
+    init();
+  }
+}
+
 // Event Handles
 function handleButtonClick(event) {
   /**
    * @FLOW
-   * 1. check the event target and get the letter from the inner text
-   * 2. check that letter against the random letter
+   * 1. check the event target and get the letter from the inner text  - DONE
+   * 2. check that letter against the random letter -
    * 2a. if correct show the winning message
-   * 2b. if wrong, deduct from the guesses left and show the wrong guess
+   * 2b. if wrong, deduct from the guesses left and show the wrong guess, add the choice to the user choices and display that to the screen
    * 2c if wrong and no guesses left, show the losing message
    */
 
   if (event.target.tagName !== 'BUTTON') return;
 
   const choice = event.target.innerText;
-  console.log(choice);
+  checkForValidTurn(choice);
 }
 // Event Listeners
 document.addEventListener('click', handleButtonClick);
@@ -70,10 +111,11 @@ document.addEventListener('click', handleButtonClick);
 // start the game
 function init() {
   computerChoice();
-  winsEl.textContent = wins;
-  lossesEl.textContent = losses;
-  guessesLeftEl.textContent = guessesLeft;
-  userGuessesEl.textContent = userGuesses;
+
+  updateUI(winsEl, wins);
+  updateUI(lossesEl, losses);
+  updateUI(guessesLeftEl, guessesLeft);
+  updateUI(userGuessesEl, userGuesses);
 
   // render the letters on the page
   letterButtonsContainerEl.innerHTML = generateLetterButtons();
