@@ -21,7 +21,7 @@ let losses = 0;
 let guessesLeft = 10;
 let userGuesses = [];
 let randomLetter;
-const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const letters = 'abcdefghijklmnopqrstuvwxyz'.toLocaleUpperCase().split('');
 
 // UI Variables
 const winsEl = document.querySelector('#wins');
@@ -32,18 +32,51 @@ const letterButtonsContainerEl = document.querySelector('#letter-buttons-contain
 
 // Utility Functions
 function computerChoice() {
-  return Math.floor(Math.random() * letters.length);
+  const randomIndex = Math.floor(Math.random() * letters.length);
+  randomLetter = letters[randomIndex];
+}
+
+// if i take a string of html elements and instert it into the innerHTML of any element,
+// the browser will convert it to HTML for us
+function generateLetterButtons() {
+  // <div class="cell">Cell 1</div>
+  let buttons = '';
+
+  letters.forEach((letter) => {
+    buttons += `<button>${letter}</button>`;
+  });
+
+  return buttons;
 }
 // Event Handles
+function handleButtonClick(event) {
+  /**
+   * @FLOW
+   * 1. check the event target and get the letter from the inner text
+   * 2. check that letter against the random letter
+   * 2a. if correct show the winning message
+   * 2b. if wrong, deduct from the guesses left and show the wrong guess
+   * 2c if wrong and no guesses left, show the losing message
+   */
 
+  if (event.target.tagName !== 'BUTTON') return;
+
+  const choice = event.target.innerText;
+  console.log(choice);
+}
 // Event Listeners
+document.addEventListener('click', handleButtonClick);
 
 // start the game
 function init() {
+  computerChoice();
   winsEl.textContent = wins;
   lossesEl.textContent = losses;
   guessesLeftEl.textContent = guessesLeft;
   userGuessesEl.textContent = userGuesses;
+
+  // render the letters on the page
+  letterButtonsContainerEl.innerHTML = generateLetterButtons();
 }
 
 init();
